@@ -1,0 +1,95 @@
+.students-page-background {
+    width: 100%;
+    min-height: calc(100vh - 91px);
+    background-color: #003f64;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.students-page-container {
+    width: 90%;
+    min-height: 80vh;
+    background-color: white;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    color: #003f64;
+}
+
+
+.students-page-sections {
+    display: flex;
+    width: 100%;
+    gap: 40px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.students-page-list {
+    flex: 1;
+    min-width: 250px;
+}
+.students-page-list h2{
+    text-align: center;
+}
+
+.students-page-list ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+}
+
+.students-page-list li {
+    background-color: #f0f4f8;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    border: 1px solid #d0d7de;
+}
+
+
+.students-page-add-new-student {
+    flex: 1;
+    min-width: 250px;
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.students-page-add-new-student h3 {
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+.students-page-add-new-student form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.students-page-add-new-student input {
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+.students-page-add-new-student button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    background-color: #23a6f0;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.students-page-add-new-student button:hover {
+    opacity: 0.85;
+}

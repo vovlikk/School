@@ -4,3 +4,10 @@
     box-sizing: border-box;
     
 }
+
+.body, #root {
+    background-color: #003f64; /* синий фон */
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+}

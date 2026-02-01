@@ -15,13 +15,28 @@ function CoursesPage() {
     }, []);
 
     return (
-        <div>
-            <h2>Courses List</h2>
-            <ul>
-                {courses.map((course) => (
-                    <li key={course.id}>{course.name}</li>
-                ))}
-            </ul>
+        <div className="courses-page-background ">
+            <div className="courses-page-container">
+                <div className="courses-page-section">
+
+                    <div className="courses-page-list">
+                        <h2>Courses List</h2>
+                        <ul>
+                            {courses.map((course) => (
+                                <li key={course.id}>{course.name}</li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    <div className="courses-page-add-new-course">
+
+                    </div>
+
+                    <div className="courses-page-delete-course">
+                        
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }
