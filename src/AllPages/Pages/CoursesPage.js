@@ -35,6 +35,10 @@ function CoursesPage() {
         } catch(err) {
             setError("Failed to add course.");
         }
+        finally{
+            setCourseTitle("");
+            setCourseDescription("");
+        }
     };
 
     return (
