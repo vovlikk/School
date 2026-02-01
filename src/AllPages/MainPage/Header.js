@@ -9,7 +9,7 @@ function Header() {
     return (
         <header className="header-background">
             <div className="header-container">
-                <h1 className="header-logo">Courses</h1>
+                <h1 className="header-logo">School Web</h1>
 
                 <nav className="header-nav">
                     <Link to="/courses">Courses</Link>

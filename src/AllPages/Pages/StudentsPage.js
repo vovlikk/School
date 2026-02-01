@@ -43,10 +43,14 @@ function StudentsPage() {
         } catch {
             setError("Failed to add student.");
         }
+        finally{
+            setStudentName("");
+            setStudentLastName("");
+            setStudentAge("");
+        }
     };
 
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error}</div>;
+   
 
     return (
         <div className="students-page-background">
@@ -67,15 +71,7 @@ function StudentsPage() {
                                                     await StudentsService.deleteStudent(student.id);
                                                     setStudents(students.filter(s => s.id !== student.id));
                                                 }}
-                                                style={{
-                                                    marginLeft: "10px",
-                                                    padding: "4px 8px",
-                                                    backgroundColor: "#003f64",
-                                                    color: "#fff",
-                                                    border: "none",
-                                                    borderRadius: "4px",
-                                                    cursor: "pointer"
-                                                }}
+                                                
                                             >
                                                 Delete
                                         </button>
@@ -84,6 +80,8 @@ function StudentsPage() {
                                 ))}
                             </ul>
                         )}
+                         {loading && <p>Loading students...</p>}
+                         {error && <p style={{color: 'red'}}>{error}</p>}
                     </div>
 
                     <div className="students-page-add-new-student">
