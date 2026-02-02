@@ -1,7 +1,7 @@
 import { supabase } from "../Connect/dataconnect";
 
 const EnrollmentService = {
-  // Получить всех студентов
+  
   getStudents: async () => {
     const { data, error } = await supabase.from('students').select('*');
     if (error) {
@@ -11,7 +11,7 @@ const EnrollmentService = {
     return data;
   },
 
-  // Получить все курсы
+  
   getCourses: async () => {
     const { data, error } = await supabase.from('courses').select('*');
     if (error) {
@@ -21,7 +21,7 @@ const EnrollmentService = {
     return data;
   },
 
-  // Получить все записи на курсы с данными студентов и курсов
+  
   getCoursesAndStudents: async () => {
     const { data, error } = await supabase
       .from('enrollments')
@@ -36,13 +36,13 @@ const EnrollmentService = {
     return data;
   },
 
-  // Добавить запись студента на курс
+ 
   addStudentToCourse: async (studentId, courseId) => {
     const { data, error } = await supabase
       .from('enrollments')
       .insert({
         student_id: studentId,
-        course_id: courseId   // <-- убедись, что в таблице enrollments колонка называется course_id
+        course_id: courseId   
       });
     return { data, error };
   }

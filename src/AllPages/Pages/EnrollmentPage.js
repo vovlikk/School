@@ -7,6 +7,7 @@ function EnrollmentPage() {
     const [courses, setCourses] = useState([]);
     const [selectedStudent, setSelectedStudent] = useState(null);
     const [selectedCourse, setSelectedCourse] = useState(null);
+    const [studentsAndCourses, setStudentsAndCourses] = useState([]);
 
     useEffect(() => {
         async function fetchData() {
@@ -15,6 +16,9 @@ function EnrollmentPage() {
 
             const coursesData = await EnrollmentService.getCourses();
             setCourses(coursesData);
+
+            const coursesstudentsData = await EnrollmentService.getCoursesAndStudents();
+            setStudentsAndCourses(coursesstudentsData);
         }
         fetchData();
     }, []);
@@ -31,7 +35,6 @@ function EnrollmentPage() {
         const selectedCourseStart = new Date(`1970-01-01T${selectedCourse.time}:00`);
         const selectedCourseEnd = new Date(selectedCourseStart.getTime() + courseDurationMinutes * 60000);
 
-        // Проверка: студент уже записан на этот курс
         const alreadyEnrolled = enrollmentData.some(
             e => e.students.id === selectedStudent.id && e.courses.id === selectedCourse.id
         );
@@ -40,7 +43,6 @@ function EnrollmentPage() {
             return;
         }
 
-        // Проверка пересечения по времени с другими курсами студента (инфо, не блокирует)
         const hasConflict = enrollmentData
             .filter(e => e.students.id === selectedStudent.id)
             .some(e => {
@@ -62,6 +64,7 @@ function EnrollmentPage() {
             alert("Student enrolled successfully!");
             setSelectedStudent(null);
             setSelectedCourse(null);
+            setStudentsAndCourses(await EnrollmentService.getCoursesAndStudents());
         }
     }
 
@@ -101,7 +104,7 @@ function EnrollmentPage() {
                                 <option value="">Select Course</option>
                                 {courses.map(course => (
                                     <option key={course.id} value={course.id}>
-                                        {course.title} ({course.time})
+                                        {course.title} 
                                     </option>
                                 ))}
                             </select>
@@ -116,6 +119,21 @@ function EnrollmentPage() {
                         >
                             Enroll
                         </button>
+                    </div>
+
+                    <div className="enrollment-fetch-students-courses-column">
+                        <h3>Students and Courses</h3>
+                        {studentsAndCourses.length === 0 ? (
+                            <p>No enrollments</p>
+                        ) : (
+                            <ul>
+                                {studentsAndCourses.map(item => (
+                                    <li key={item.id}>
+                                        <strong>{item.students.first_name} {item.students.last_name}</strong> — {item.courses.title}
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
                     </div>
                 </div>
             </div>

@@ -101,3 +101,58 @@
     cursor: not-allowed;
 }
 
+.enrollment-fetch-students-courses-column {
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    height: 100%;
+    max-height: 300px;
+    overflow-y: auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.enrollment-fetch-students-courses-column h3 {
+    text-align: center;
+    font-weight: 300;
+    font-size: 1.4rem;
+    color: #000000;
+    margin-bottom: 15px;
+}
+
+.enrollment-fetch-students-courses-column ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.enrollment-fetch-students-courses-column li {
+    background-color: #ffffff;
+    border: 1px solid #d0d7de;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.2s, transform 0.1s;
+    cursor: default;
+}
+
+.enrollment-fetch-students-courses-column li:hover {
+    background-color: #eaf4ff;
+    transform: translateY(-2px);
+}
+
+.enrollment-fetch-students-courses-column li strong {
+    color: #000000;
+}
+
+.enrollment-fetch-students-courses-column p {
+    text-align: center;
+    color: #777;
+    font-style: italic;
+    margin-top: 20px;
+}
