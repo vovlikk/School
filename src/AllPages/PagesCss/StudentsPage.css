@@ -110,3 +110,8 @@
 .students-page-add-new-student button:hover {
     opacity: 0.85;
 }
+
+.student-buttons{
+    display: flex;
+    gap: 10px;
+}

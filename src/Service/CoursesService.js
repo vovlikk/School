@@ -26,7 +26,16 @@ const CoursesService = {
             return null;
         }
         return data;
-    }
+    },
+
+    updateCourse: async (courseId, updatedFields) => {
+        const { data, error } = await supabase.from('courses').update(updatedFields).eq('id', courseId);
+        if (error) {
+            console.error("Error updating course:", error);
+            return null;
+        }
+        return data;
+    },
 };
 
 export default CoursesService;

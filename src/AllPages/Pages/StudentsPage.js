@@ -7,6 +7,12 @@ function StudentsPage() {
     const [studentName, setStudentName] = useState("");
     const [studentLastName, setStudentLastName] = useState("");
     const [studentAge, setStudentAge] = useState("");
+
+    const [edditStudentName, setEdditStudentName] = useState("");
+    const [edditStudentLastName, setEdditStudentLastName] = useState("");
+    const [edditStudentAge, setEdditStudentAge] = useState("");
+
+    const [editingStudentId, setEditingStudentId] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -34,7 +40,7 @@ function StudentsPage() {
                 age: studentAge,
             });
             if (newStudent) {
-                setStudents([...students, ...newStudent]);
+                setStudents([...students, newStudent]); 
                 setStudentName("");
                 setStudentLastName("");
                 setStudentAge("");
@@ -42,15 +48,35 @@ function StudentsPage() {
             alert("Student added successfully!");
         } catch {
             setError("Failed to add student.");
-        }
-        finally{
+        } finally {
             setStudentName("");
             setStudentLastName("");
             setStudentAge("");
         }
     };
 
-   
+    const handleUpdateStudent = async (id) => {
+    try {
+        const updatedFields = {};
+        if (edditStudentName) updatedFields.first_name = edditStudentName;
+        if (edditStudentLastName) updatedFields.last_name = edditStudentLastName;
+        if (edditStudentAge) updatedFields.age = Number(edditStudentAge);
+
+        const updated = await StudentsService.updateStudent(id, updatedFields);
+
+        if (updated) {
+            
+            setStudents(students.map(s => s.id === id ? updated[0] : s));
+        }
+
+        setEditingStudentId(null);
+        setEdditStudentName("");
+        setEdditStudentLastName("");
+        setEdditStudentAge("");
+    } catch {
+        setError("Failed to update student.");
+    }
+};
 
     return (
         <div className="students-page-background">
@@ -64,24 +90,59 @@ function StudentsPage() {
                             <ul>
                                 {students.map(student => (
                                     <li key={student.id}>
-                                        {student.name} {student.last_name} — {student.age} yrs
-
-                                        <button
-                                                onClick={async () => {
-                                                    await StudentsService.deleteStudent(student.id);
-                                                    setStudents(students.filter(s => s.id !== student.id));
-                                                }}
-                                                
-                                            >
-                                                Delete
-                                        </button>
-                                        
+                                        {editingStudentId === student.id ? (
+                                            <>
+                                                <input
+                                                    type="text"
+                                                    value={edditStudentName}
+                                                    onChange={(e) => setEdditStudentName(e.target.value)}
+                                                />
+                                                <input
+                                                    type="text"
+                                                    value={edditStudentLastName}
+                                                    onChange={(e) => setEdditStudentLastName(e.target.value)}
+                                                />
+                                                <input
+                                                    type="number"
+                                                    value={edditStudentAge}
+                                                    onChange={(e) => setEdditStudentAge(e.target.value)}
+                                                />
+                                                <button onClick={() => handleUpdateStudent(student.id)}>Save</button>
+                                                <button onClick={() => setEditingStudentId(null)}>Cancel</button>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <span>
+                                                    {student.first_name} {student.last_name} — {student.age} yrs
+                                                </span>
+                                                <div className="student-buttons">
+                                                <button
+                                                    onClick={() => {
+                                                        setEditingStudentId(student.id);
+                                                        setEdditStudentName(student.first_name);
+                                                        setEdditStudentLastName(student.last_name);
+                                                        setEdditStudentAge(student.age);
+                                                    }}
+                                                >
+                                                    Edit
+                                                </button>
+                                                <button
+                                                    onClick={async () => {
+                                                        await StudentsService.deleteStudent(student.id);
+                                                        setStudents(students.filter(s => s.id !== student.id));
+                                                    }}
+                                                >
+                                                    Delete
+                                                </button>
+                                                </div>
+                                            </>
+                                        )}
                                     </li>
                                 ))}
                             </ul>
                         )}
-                         {loading && <p>Loading students...</p>}
-                         {error && <p style={{color: 'red'}}>{error}</p>}
+                        {loading && <p>Loading students...</p>}
+                        {error && <p style={{ color: "red" }}>{error}</p>}
                     </div>
 
                     <div className="students-page-add-new-student">
@@ -112,9 +173,7 @@ function StudentsPage() {
                         </form>
                     </div>
 
-                    <div className="students-page-delete-student">
-                        
-                    </div>
+                    <div className="students-page-delete-student"></div>
                 </div>
             </div>
         </div>

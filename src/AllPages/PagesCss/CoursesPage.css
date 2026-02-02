@@ -114,3 +114,8 @@
 .courses-page-add-new-course button:hover {
     opacity: 0.85;
 }
+
+.course-buttons {
+    display: flex;
+    gap: 10px; 
+}
