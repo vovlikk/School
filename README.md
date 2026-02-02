@@ -1,70 +1,87 @@
-# Getting Started with Create React App
+﻿# School Management App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A full-stack web application for managing students, courses, and enrollments built with  **React**  and  **Supabase API**.
 
-## Available Scripts
+This project was created as a technical task and demonstrates CRUD operations, frontend validation, and integration with a backend service using Supabase.
 
-In the project directory, you can run:
+----------
 
-### `npm start`
+## 🚀 Technologies
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+-   **React**  – Frontend UI library
+    
+-   **Supabase**  – Backend as a Service (Database + API)
+    
+-   **JavaScript / JSX**  – App logic
+    
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+----------
 
-### `npm test`
+## 🧠 Features
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+✔ View, create, edit, and delete students  
+✔ View, create, edit, and delete courses  
+✔ Enroll students in courses  
+✔ Prevent enrolling in courses with the same start time  
+✔ All operations use Supabase API  
+✔ No custom backend — pure frontend + Supabase
 
-### `npm run build`
+----------
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🗂️ Project Structure
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+`/src
+  /components – UI components
+  /pages      – Main pages (Students, Courses, Enrollments)
+  /lib        – Supabase client setup
+  /services   – API interaction
+  /types      – Type definitions` 
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+----------
 
-### `npm run eject`
+## ⚙️ Getting Started
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### 1. Install dependencies
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+`npm install` 
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### 2. Create Supabase project
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+1.  Sign up at  [https://supabase.com](https://supabase.com/)
+    
+2.  Create a new project
+    
+3.  Create tables:  `students`,  `courses`,  `enrollments`
+    
 
-## Learn More
+### 3. Configure environment
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Put keys in file: ConnectData
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+`VITE_SUPABASE_URL=your_supabase_url VITE_SUPABASE_KEY=your_supabase_key` 
 
-### Code Splitting
+Add  `.env`  to  `.gitignore`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-### Analyzing the Bundle Size
+----------
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 🧪 Running the App
 
-### Making a Progressive Web App
+Start the dev server:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+`npm run dev` 
 
-### Advanced Configuration
+Open in browser:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+`http://localhost:5173` 
 
-### Deployment
+----------
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## 📌 Validation Rules
 
-### `npm run build` fails to minify
+✔ Students must have first name, last name, and age  
+✔ Courses must have title, start time, and description  
+✔ Course title must be unique  
+✔ A student cannot be enrolled in two courses with the same start time
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+

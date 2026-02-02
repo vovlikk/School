@@ -12,6 +12,7 @@ function Header() {
                 <h1 className="header-logo">School Web</h1>
 
                 <nav className="header-nav">
+                    <Link to="/">Home</Link>
                     <Link to="/courses">Courses</Link>
                     <Link to="/students">Students</Link>
                     <Link to="/enrollment">Enrollment</Link>
