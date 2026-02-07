@@ -3,17 +3,27 @@ import React, { useEffect, useState } from "react";
 import CoursesService from "../../Service/CoursesService";
 
 function CoursesPage() {
-    const [courses, setCourses] = useState([]);
-    const [courseTitle, setCourseTitle] = useState("");
-    const [courseDescription, setCourseDescription] = useState("");
-    const [courseStartTime, setCourseStartTime] = useState(""); 
 
-    const [edditCourseTitle, setEdditCourseTitle] = useState("");
-    const [edditCourseDescription, setEdditCourseDescription] = useState("");
-    const [edditCourseStartTime, setEdditCourseStartTime] = useState("");
+    const [courses, setCourses] = useState([]);
+
+    
+    const [corsesinfo, setCoursesInfo] = useState({
+        courseTitle: "",
+        courseDescription: "",
+        courseStartTime: "",
+    });
+
+    
+    const [edditCourse, setEditCourse] = useState({
+        edditCourseTitle: "",
+        edditCourseDescription: "",
+        edditCourseStartTime: ""
+    });
 
     const [editingCourseId, setEditingCourseId] = useState(null);
     const [error, setError] = useState(null);
+
+    
 
     useEffect(() => {
         const fetchCourses = async () => {
@@ -27,65 +37,91 @@ function CoursesPage() {
         fetchCourses();
     }, []);
 
+   
+
     const handleAddCourse = async (e) => {
         e.preventDefault();
         setError(null);
 
-        if (!courseTitle || !courseDescription || !courseStartTime) {
+        if (!corsesinfo.courseTitle || !corsesinfo.courseDescription || !corsesinfo.courseStartTime) {
             setError("All fields are required.");
             return;
         }
 
         try {
             const newCourse = await CoursesService.addCourse({
-                title: courseTitle,
-                description: courseDescription,
-                start_time: courseStartTime, 
+                title: corsesinfo.courseTitle,
+                description: corsesinfo.courseDescription,
+                start_time: corsesinfo.courseStartTime,
             });
+
             if (newCourse) {
-                setCourses([...courses, newCourse]);
+                setCourses(prev => [...prev, newCourse]);
             }
-        } catch (err) {
-            setError("Failed to add course. Make sure the title is unique and time is valid.");
-        } finally {
-            setCourseTitle("");
-            setCourseDescription("");
-            setCourseStartTime("");
-            alert("Course added successfully.");
+
+            setCoursesInfo({
+                courseTitle: "",
+                courseDescription: "",
+                courseStartTime: "",
+            });
+
+        } catch {
+            setError("Failed to add course. Time conflict or duplicate title.");
         }
     };
+
+
 
     const handleDeleteCourse = async (id) => {
         try {
             await CoursesService.deleteCourse(id);
-            setCourses(courses.filter(c => c.id !== id));
-        } catch (err) {
+            setCourses(prev => prev.filter(c => c.id !== id));
+        } catch {
             setError("Failed to delete course.");
         }
     };
 
-   
+    
+
+    const startEdit = (course) => {
+        setEditingCourseId(course.id);
+        setEditCourse({
+            edditCourseTitle: course.title,
+            edditCourseDescription: course.description,
+            edditCourseStartTime: course.start_time
+        });
+    };
+
+    
+
     const handleUpdateCourse = async (id) => {
         try {
-            const updatedFields = {};
-            if (edditCourseTitle) updatedFields.title = edditCourseTitle;
-            if (edditCourseDescription) updatedFields.description = edditCourseDescription;
-            if (edditCourseStartTime) updatedFields.start_time = edditCourseStartTime;
+            const updatedCourse = await CoursesService.updateCourse(id, {
+                title: edditCourse.edditCourseTitle,
+                description: edditCourse.edditCourseDescription,
+                start_time: edditCourse.edditCourseStartTime
+            });
 
-            const updatedCourse = await CoursesService.updateCourse(id, updatedFields);
             if (updatedCourse) {
-                setCourses(courses.map(c => c.id === id ? updatedCourse[0] : c)); 
+                setCourses(prev =>
+                    prev.map(c => c.id === id ? updatedCourse[0] : c)
+                );
             }
 
             setEditingCourseId(null);
-            setEdditCourseTitle("");
-            setEdditCourseDescription("");
-            setEdditCourseStartTime("");
+            setEditCourse({
+                edditCourseTitle: "",
+                edditCourseDescription: "",
+                edditCourseStartTime: ""
+            });
+
         } catch (err) {
             setError("Failed to update course.");
             console.log(err);
         }
     };
+
+    
 
     return (
         <div className="courses-page-background">
@@ -94,54 +130,74 @@ function CoursesPage() {
 
                     <div className="courses-page-list">
                         <h2>Courses List</h2>
-                        {error && <p style={{color: 'red'}}>{error}</p>}
+                        {error && <p style={{ color: 'red' }}>{error}</p>}
+
                         {courses.length === 0 ? (
                             <p>No courses found.</p>
                         ) : (
                             <ul>
                                 {courses.map((course) => (
                                     <li key={course.id}>
+
                                         {editingCourseId === course.id ? (
                                             <>
                                                 <input
-                                                    type="text"
-                                                    value={edditCourseTitle}
-                                                    onChange={(e) => setEdditCourseTitle(e.target.value)}
+                                                    value={edditCourse.edditCourseTitle}
+                                                    onChange={(e) =>
+                                                        setEditCourse(p => ({
+                                                            ...p,
+                                                            edditCourseTitle: e.target.value
+                                                        }))
+                                                    }
                                                 />
+
                                                 <input
-                                                    type="text"
-                                                    value={edditCourseDescription}
-                                                    onChange={(e) => setEdditCourseDescription(e.target.value)}
+                                                    value={edditCourse.edditCourseDescription}
+                                                    onChange={(e) =>
+                                                        setEditCourse(p => ({
+                                                            ...p,
+                                                            edditCourseDescription: e.target.value
+                                                        }))
+                                                    }
                                                 />
+
                                                 <input
                                                     type="time"
-                                                    value={edditCourseStartTime}
-                                                    onChange={(e) => setEdditCourseStartTime(e.target.value)}
+                                                    value={edditCourse.edditCourseStartTime}
+                                                    onChange={(e) =>
+                                                        setEditCourse(p => ({
+                                                            ...p,
+                                                            edditCourseStartTime: e.target.value
+                                                        }))
+                                                    }
                                                 />
-                                                <button onClick={() => handleUpdateCourse(course.id)}>Save</button>
-                                                <button onClick={() => setEditingCourseId(null)}>Cancel</button>
+
+                                                <button onClick={() => handleUpdateCourse(course.id)}>
+                                                    Save
+                                                </button>
+
+                                                <button onClick={() => setEditingCourseId(null)}>
+                                                    Cancel
+                                                </button>
                                             </>
                                         ) : (
                                             <>
                                                 <span>
-                                                {course.title} ({course.start_time}) — {course.description}
+                                                    {course.title} ({course.start_time}) — {course.description}
                                                 </span>
-                                                
+
                                                 <div className="course-buttons">
-                                                    <button
-                                                        onClick={() => {
-                                                            setEditingCourseId(course.id);
-                                                            setEdditCourseTitle(course.title);
-                                                            setEdditCourseDescription(course.description);
-                                                            setEdditCourseStartTime(course.start_time);
-                                                        }}
-                                                    >
+                                                    <button onClick={() => startEdit(course)}>
                                                         Edit
                                                     </button>
-                                                    <button onClick={() => handleDeleteCourse(course.id)}>Delete</button>
+
+                                                    <button onClick={() => handleDeleteCourse(course.id)}>
+                                                        Delete
+                                                    </button>
                                                 </div>
                                             </>
                                         )}
+
                                     </li>
                                 ))}
                             </ul>
@@ -150,29 +206,49 @@ function CoursesPage() {
 
                     <div className="courses-page-add-new-course">
                         <h3>Add New Course</h3>
+
                         <form onSubmit={handleAddCourse}>
+
                             <input
-                                type="text"
                                 placeholder="Course Title"
-                                value={courseTitle}
-                                onChange={(e) => setCourseTitle(e.target.value)}
+                                value={corsesinfo.courseTitle}
+                                onChange={(e) =>
+                                    setCoursesInfo(p => ({
+                                        ...p,
+                                        courseTitle: e.target.value
+                                    }))
+                                }
                                 required
                             />
+
                             <input
-                                type="text"
                                 placeholder="Course Description"
-                                value={courseDescription}
-                                onChange={(e) => setCourseDescription(e.target.value)}
+                                value={corsesinfo.courseDescription}
+                                onChange={(e) =>
+                                    setCoursesInfo(p => ({
+                                        ...p,
+                                        courseDescription: e.target.value
+                                    }))
+                                }
                                 required
                             />
+
                             <input
                                 type="time"
-                                placeholder="Start Time"
-                                value={courseStartTime}
-                                onChange={(e) => setCourseStartTime(e.target.value)}
+                                value={corsesinfo.courseStartTime}
+                                onChange={(e) =>
+                                    setCoursesInfo(p => ({
+                                        ...p,
+                                        courseStartTime: e.target.value
+                                    }))
+                                }
                                 required
                             />
-                            <button type="submit">Add Course</button>
+
+                            <button type="submit">
+                                Add Course
+                            </button>
+
                         </form>
                     </div>
 
