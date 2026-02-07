@@ -65,6 +65,8 @@ function CoursesPage() {
                 courseStartTime: "",
             });
 
+            alert("Cours was sucesfull added")
+
         } catch {
             setError("Failed to add course. Time conflict or duplicate title.");
         }
