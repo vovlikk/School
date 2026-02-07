@@ -52,8 +52,9 @@ function EnrollmentPage() {
             });
 
         if (hasConflict) {
-            console.log("Warning: Selected course time conflicts with another course for this student.");
-        }
+            alert("Student cannot be enrolled because they already have a lesson at this time.");
+        return;
+    }
 
         const { data, error } = await EnrollmentService.addStudentToCourse(selectedStudent.id, selectedCourse.id);
 
